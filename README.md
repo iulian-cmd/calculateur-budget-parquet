@@ -6,6 +6,9 @@ Calculateur web interactif pour estimer le budget d'un **parquet stratifié** po
 
 ## Fonctionnalités
 
+- **Français / English** : deux petits drapeaux en haut à droite permettent de changer de langue sans perdre les dimensions ni les produits sélectionnés. La langue choisie est mémorisée dans le navigateur.
+- **Images entières** : les photos restent dans les cartes existantes, sans recadrage. Cliquez ou utilisez le clavier pour ouvrir un aperçu ; fermez avec ×, Échap ou un clic à l’extérieur.
+
 - **Surface** : dimensions de la pièce modifiables, surface nette calculée automatiquement.
 - **Marge de chutes** : curseur de 10 % à 15 % (15 % conseillé pour une petite pièce).
 - **Achat par conditionnements complets** : le nombre de bottes de stratifié et de rouleaux de sous-couche est arrondi au conditionnement supérieur, et la *marge réelle* due aux paquets complets est affichée.
@@ -27,11 +30,11 @@ Calculateur web interactif pour estimer le budget d'un **parquet stratifié** po
 
 ## Utilisation
 
-Aucune installation ni dépendance : ouvrez simplement `index.html` dans un navigateur. Le fichier est autonome (HTML + CSS + JS dans un seul fichier, polices chargées via CDN Fontshare).
+Aucune installation ni dépendance : ouvrez simplement `index.html` dans un navigateur. Conservez `enhancements.js` et le dossier `assets/` à côté de `index.html`. Aucun outil de compilation n’est nécessaire ; les polices sont chargées via CDN Fontshare.
 
 ## Structure du code
 
-Tout le code tient dans [`index.html`](index.html) :
+La mise en page, le catalogue et les calculs sont dans [`index.html`](index.html). Les traductions FR/EN, la préférence de langue et l’aperçu des images sont dans [`enhancements.js`](enhancements.js) :
 
 - **Catalogue produits** : les tableaux `FLOORINGS`, `UNDERLAYS`, `KITS`, `MALLETS` et `CUTS` en tête du script contiennent les 12 références vérifiées (prix, conditionnement, lien vers la fiche produit Leroy Merlin). Mettez-les à jour si les prix évoluent.
 - **Photos produits** : chaque référence possède une photo officielle dans le dossier [`assets/`](assets/) (images Leroy Merlin, CDN media.adeo.com), affichée en haut de sa carte pour identifier le produit d'un coup d'œil.
