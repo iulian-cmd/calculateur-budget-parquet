@@ -108,6 +108,7 @@ input[type='range'] { width: 100%; accent-color: var(--color-primary); height: 1
 @media (min-width: 640px) { .options.cols-2 { grid-template-columns: 1fr 1fr; } }
 .option { position: relative; display: block; }
 .option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.option-img { width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: var(--space-4); border: 1px solid var(--color-divider); background: #fff; }
 .option-body { display: block; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); background: var(--color-surface-2); cursor: pointer; transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); height: 100%; }
 .option:hover .option-body { border-color: var(--color-primary); }
 .option input:checked ~ .option-body { border-color: var(--color-primary); box-shadow: 0 0 0 1.5px var(--color-primary), var(--shadow-md); background: #fff9ee; }
@@ -275,6 +276,7 @@ const FLOORINGS = [
     desc: 'Entrée de gamme — chêne clair, chanfrein V 4 côtés',
     priceM2: 13.99, pack: 1.99, packPrice: 27.84,
     badges: ['Le plus économique', 'Classe 32 · AC4'],
+    img: 'assets/maleny.jpg',
     url: 'https://www.leroymerlin.fr/produits/sol-stratifie-forte-artens-maleny-ep-8-mm-85086497.html'
   },
   {
@@ -283,6 +285,7 @@ const FLOORINGS = [
     desc: 'Milieu de gamme — résistant à l\u2019eau, promo en cours',
     priceM2: 16.50, pack: 1.689, packPrice: 27.87,
     badges: ['Résistant à l\u2019eau', 'Promo −24 %'],
+    img: 'assets/malte.jpg',
     url: 'https://www.leroymerlin.fr/produits/sol-stratifie-intenso-artens-malte-ep-10-mm-resistant-a-eau-85086562.html'
   },
   {
@@ -291,6 +294,7 @@ const FLOORINGS = [
     desc: 'Milieu de gamme — classe 33, fabriqué en France',
     priceM2: 17.99, pack: 2.222, packPrice: 39.97,
     badges: ['Classe 33 · AC5', 'Fabriqué en France'],
+    img: 'assets/saliente.jpg',
     url: 'https://www.leroymerlin.fr/produits/sol-stratifie-creativ-line-saliente-2-ep-8-mm-84681153.html'
   },
   {
@@ -299,6 +303,7 @@ const FLOORINGS = [
     desc: 'Haut de la fourchette — résistant à l\u2019eau, Uniclic',
     priceM2: 24.99, pack: 2.172, packPrice: 54.28,
     badges: ['Résistant à l\u2019eau', 'Pose Uniclic'],
+    img: 'assets/avron.jpg',
     url: 'https://www.leroymerlin.fr/produits/sol-stratifie-panache-sens-by-quick-step-avron-ep-8-mm-resistant-a-eau-88972567.html'
   }
 ];
@@ -309,6 +314,7 @@ const UNDERLAYS = [
     name: 'AXTON Silence compensation 3 mm',
     desc: 'Acoustique + compensation des petites irrégularités du sol',
     roll: 10, rollPrice: 29.90, priceM2: 2.99,
+    img: 'assets/axton3.jpg',
     url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-silence-compensation-ep-3-mm-axton-10-m2-82282778.html'
   },
   {
@@ -316,6 +322,7 @@ const UNDERLAYS = [
     name: 'AXTON Silence 2 mm',
     desc: 'Acoustique standard — rouleau de 15 m²',
     roll: 15, rollPrice: 35.85, priceM2: 2.39,
+    img: 'assets/axton2.jpg',
     url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-silence-ep-2-mm-axton-15-m2-82282773.html'
   },
   {
@@ -323,6 +330,7 @@ const UNDERLAYS = [
     name: 'Quick-Step Unisound 2 mm',
     desc: 'Acoustique premium — rouleau de 15 m²',
     roll: 15, rollPrice: 82.50, priceM2: 5.50,
+    img: 'assets/unisound.jpg',
     url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-unisound-ep-2-mm-sens-by-quick-step-15-m2-82024098.html'
   }
 ];
@@ -333,6 +341,7 @@ const KITS = [
     name: 'Kit de pose Dexter',
     desc: '30 cales de dilatation + tire-lame + cale de frappe',
     price: 9.99,
+    img: 'assets/dexter.jpg',
     url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-dexter-81974884.html'
   },
   {
@@ -340,6 +349,7 @@ const KITS = [
     name: 'Kit de pose WOLFCRAFT',
     desc: 'Tire-lame + cale de frappe + 30 cales',
     price: 16.90,
+    img: 'assets/wolfcraft.jpg',
     url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-wolfcraft-82767660.html'
   },
   {
@@ -347,6 +357,7 @@ const KITS = [
     name: 'Kit de pose Quick-Step',
     desc: 'Cale de frappe + cales de dilatation réglables + tire-lame métal',
     price: 18.90,
+    img: 'assets/quickstep.jpg',
     url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-sens-by-quick-step-82024100.html'
   }
 ];
@@ -357,6 +368,7 @@ const MALLETS = [
     name: 'Maillet de caoutchouc noir 0,308 kg',
     desc: '1er prix — suffisant pour emboîter des lames clic',
     price: 3.99,
+    img: 'assets/maillet1.jpg',
     url: 'https://www.leroymerlin.fr/produits/maillet-de-caoutchouc-noir-0-308-kg-81968464.html'
   },
   {
@@ -364,6 +376,7 @@ const MALLETS = [
     name: 'Maillet de caoutchouc blanc Dexter 0,540 kg',
     desc: 'Plus confortable pour une grande pièce',
     price: 7.59,
+    img: 'assets/mailletdexter.jpg',
     url: 'https://www.leroymerlin.fr/produits/maillet-de-caoutchouc-blanc-0-540-kg-dexter-85505756.html'
   }
 ];
@@ -374,6 +387,7 @@ const CUTS = [
     name: 'Scie sauteuse PRACTYL 400 W',
     desc: '1er prix — coupe bois 55 mm, idéale pour tronçonner les lames',
     price: 19.90,
+    img: 'assets/practyl.jpg',
     url: 'https://www.leroymerlin.fr/produits/scie-sauteuse-filaire-practyl-400w-91177661.html'
   },
   {
@@ -381,6 +395,7 @@ const CUTS = [
     name: 'Scie sauteuse DEXTER 500 W',
     desc: 'Plus robuste — 4,5 étoiles, 290 avis',
     price: 24.90,
+    img: 'assets/dexter500.jpg',
     url: 'https://www.leroymerlin.fr/produits/scie-sauteuse-filaire-dexter-500w-92220950.html'
   },
   {
@@ -388,6 +403,7 @@ const CUTS = [
     name: 'Boîte à onglet + scie Dexter 360 mm',
     desc: 'Le moins cher — plinthes et petites coupes uniquement',
     price: 10.90, warn: true,
+    img: 'assets/onglet.jpg',
     url: 'https://www.leroymerlin.fr/produits/boite-a-onglet-avec-scie-l-360-mm-dexter-82711878.html'
   }
 ];
@@ -412,6 +428,7 @@ function card({ group, item, checked, extra }) {
   const warn = item.warn ? `<p class="warning">Boîte de 285 × 110 mm : trop étroite pour couper une lame de 19,2 cm de large. À réserver aux plinthes et petites coupes — pour les lames, choisissez une scie sauteuse.</p>` : '';
   const link = item.url ? `<a class="option-link" href="${item.url}" target="_blank" rel="noopener">Voir la fiche Leroy Merlin →</a>` : '';
   li.innerHTML = `${input}<label class="option-body" for="${group}-${item.id}">
+    ${item.img ? `<img class="option-img" src="${item.img}" alt="Photo du produit : ${item.name}" loading="lazy">` : ''}
     <div class="option-title"><h3>${item.name}</h3><span class="option-price">${item.price > 0 ? eur(item.price) : '0\u00a0€'}</span></div>
     <p class="option-desc">${item.desc}</p>
     ${badges ? `<div class="badges">${badges}</div>` : ''}
@@ -438,7 +455,7 @@ function renderOptions() {
   const kg = document.getElementById('kitGroup');
   kg.innerHTML = '';
   KITS.concat([NONE]).forEach(k => {
-    const el = card({ group: 'kit', item: { ...k, badges: k.id === 'dexter' ? ['Recommandé'] : [] }, checked: k.id === state.kit, extra: k.price > 0 ? 'cales + tire-lame + cale de frappe' : '' });
+    const el = card({ group: 'kit', item: { ...k, badges: k.id === 'dexter' ? ['Recommandé'] : [] }, checked: k.id === state.kit, extra: k.price > 0 ? 'Tout le nécessaire pour la pose' : '' });
     kg.appendChild(el);
   });
   const mg = document.getElementById('malletGroup');

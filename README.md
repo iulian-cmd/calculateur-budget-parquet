@@ -34,6 +34,7 @@ Aucune installation ni dépendance : ouvrez simplement `index.html` dans un navi
 Tout le code tient dans [`index.html`](index.html) :
 
 - **Catalogue produits** : les tableaux `FLOORINGS`, `UNDERLAYS`, `KITS`, `MALLETS` et `CUTS` en tête du script contiennent les 12 références vérifiées (prix, conditionnement, lien vers la fiche produit Leroy Merlin). Mettez-les à jour si les prix évoluent.
+- **Photos produits** : chaque référence possède une photo officielle dans le dossier [`assets/`](assets/) (images Leroy Merlin, CDN media.adeo.com), affichée en haut de sa carte pour identifier le produit d'un coup d'œil.
 - **Logique de calcul** : la fonction `compute()` (arrondi au conditionnement supérieur via `Math.ceil`) et `render()` (mise à jour du récapitulatif).
 - **Avertissement découpe** : la boîte à onglets (285 × 110 mm) est signalée comme trop étroite pour couper des lames de 19,2 cm de large — réservée aux plinthes et petites coupes.
 
