@@ -153,12 +153,28 @@ input[type='range'] { width: 100%; accent-color: var(--color-primary); height: 1
 .notes h2 { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-text); margin-bottom: var(--space-3); }
 .notes ul { padding-left: var(--space-5); display: grid; gap: var(--space-2); }
 footer.site { padding-block: var(--space-8); font-size: var(--text-xs); color: var(--color-text-faint); text-align: center; }
+.language-switch { display:flex; justify-content:flex-end; gap:6px; margin-bottom:var(--space-4); }
+.language-switch button { display:flex; align-items:center; gap:6px; padding:5px 9px; background:var(--color-surface); border:1px solid var(--color-border); border-radius:6px; cursor:pointer; font-size:12px; }
+.language-switch button[aria-pressed="true"] { border-color:var(--color-primary); box-shadow:0 0 0 1px var(--color-primary); }
+.language-switch svg { width:22px; height:15px; }
+.image-preview { display:block; width:100%; padding:0; border:0; background:transparent; cursor:zoom-in; border-radius:var(--radius-md); }
+.option-img { object-fit:contain; padding:8px; }
+#imageDialog { margin:auto; width:min(680px,92vw); max-height:90dvh; border:1px solid var(--color-border); border-radius:var(--radius-lg); background:var(--color-surface); color:var(--color-text); padding:48px 20px 20px; box-shadow:var(--shadow-lg); }
+#imageDialog::backdrop { background:rgba(25,20,14,.72); }
+#imageDialog img { width:100%; height:min(60dvh,560px); object-fit:contain; background:white; }
+#imageDialog button { position:absolute; right:10px; top:8px; width:36px; height:36px; border:1px solid var(--color-border); border-radius:50%; background:var(--color-surface); cursor:pointer; font-size:24px; line-height:1; }
+#imageCaption { margin-top:12px; font-size:var(--text-sm); }
+body.preview-open { overflow:hidden; }
 </style>
 </head>
 <body>
 
 <div class="wrap">
 <header class="site">
+  <nav class="language-switch" aria-label="Language / Langue">
+    <button type="button" data-language="fr" lang="fr" aria-label="Français" aria-pressed="true"><svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#002395" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#ed2939" d="M20 0h10v20H20z"/></svg>FR</button>
+    <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false"><svg viewBox="0 0 60 40" aria-hidden="true"><path fill="#012169" d="M0 0h60v40H0z"/><path stroke="#fff" stroke-width="8" d="m0 0 60 40M60 0 0 40"/><path stroke="#c8102e" stroke-width="3" d="m0 0 60 40M60 0 0 40"/><path stroke="#fff" stroke-width="13" d="M30 0v40M0 20h60"/><path stroke="#c8102e" stroke-width="7" d="M30 0v40M0 20h60"/></svg>EN</button>
+  </nav>
   <div class="masthead">
     <div>
       <p class="eyebrow">Bricolage · Budget matériaux</p>
@@ -414,8 +430,8 @@ const NONE = { id: 'none', name: 'Aucun — déjà possédé', desc: 'Je dispose
 const state = { len: 1.52, wid: 1.56, waste: 15, floor: 'maleny', underlay: 'axton3', kit: 'dexter', mallet: 'maillet1', cut: 'practyl' };
 
 /* ---------- Utilitaires ---------- */
-const fmt = n => n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const fmt1 = n => n.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const fmt = n => n.toLocaleString(typeof language !== 'undefined' && language === 'en' ? 'en-GB' : 'fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt1 = n => n.toLocaleString(typeof language !== 'undefined' && language === 'en' ? 'en-GB' : 'fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const eur = n => fmt(n) + '\u00a0€';
 const byId = (arr, id) => arr.find(x => x.id === id);
 
@@ -428,7 +444,7 @@ function card({ group, item, checked, extra }) {
   const warn = item.warn ? `<p class="warning">Boîte de 285 × 110 mm : trop étroite pour couper une lame de 19,2 cm de large. À réserver aux plinthes et petites coupes — pour les lames, choisissez une scie sauteuse.</p>` : '';
   const link = item.url ? `<a class="option-link" href="${item.url}" target="_blank" rel="noopener">Voir la fiche Leroy Merlin →</a>` : '';
   li.innerHTML = `${input}<label class="option-body" for="${group}-${item.id}">
-    ${item.img ? `<img class="option-img" src="${item.img}" alt="Photo du produit : ${item.name}" loading="lazy">` : ''}
+    ${item.img ? `<button type="button" class="image-preview" data-fr-label="Agrandir : ${item.name}" aria-label="Agrandir : ${item.name}"><img class="option-img" src="${item.img}" data-fr-alt="Photo du produit : ${item.name}" alt="Photo du produit : ${item.name}" loading="lazy"></button>` : ''}
     <div class="option-title"><h3>${item.name}</h3><span class="option-price">${item.price > 0 ? eur(item.price) : '0\u00a0€'}</span></div>
     <p class="option-desc">${item.desc}</p>
     ${badges ? `<div class="badges">${badges}</div>` : ''}
@@ -559,6 +575,7 @@ function render() {
       document.getElementById('totalOut').closest('.total-row').before(p);
     }
   } else if (ongletWarn) ongletWarn.remove();
+  if (typeof applyLanguage === 'function') applyLanguage();
 }
 
 /* ---------- Écouteurs ---------- */
@@ -566,8 +583,12 @@ document.getElementById('len').addEventListener('input', e => { state.len = Math
 document.getElementById('wid').addEventListener('input', e => { state.wid = Math.max(0.5, parseFloat(e.target.value) || 0); render(); });
 document.getElementById('waste').addEventListener('input', e => { state.waste = parseInt(e.target.value, 10); render(); });
 
-renderOptions();
-render();
 </script>
+<dialog id="imageDialog" aria-labelledby="imageCaption">
+  <button type="button" data-fr-label="Fermer l’image" aria-label="Fermer l’image">×</button>
+  <img alt="">
+  <p id="imageCaption"></p>
+</dialog>
+<script src="enhancements.js"></script>
 </body>
 </html>
