@@ -108,7 +108,7 @@ input[type='range'] { width: 100%; accent-color: var(--color-primary); height: 1
 @media (min-width: 640px) { .options.cols-2 { grid-template-columns: 1fr 1fr; } }
 .option { position: relative; display: block; }
 .option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.option-body { border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); background: var(--color-surface-2); cursor: pointer; transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); height: 100%; }
+.option-body { display: block; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); background: var(--color-surface-2); cursor: pointer; transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); height: 100%; }
 .option:hover .option-body { border-color: var(--color-primary); }
 .option input:checked ~ .option-body { border-color: var(--color-primary); box-shadow: 0 0 0 1.5px var(--color-primary), var(--shadow-md); background: #fff9ee; }
 .option input:focus-visible ~ .option-body { outline: 2px solid var(--color-primary); outline-offset: 3px; }
