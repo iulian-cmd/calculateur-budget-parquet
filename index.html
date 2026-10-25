@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de budget parquet — Leroy Merlin</title>
+<meta name="description" content="Calculateur de budget pour un parquet stratifié Leroy Merlin : pièce de 1,52 × 1,56 m, marge de chutes 10–15 %, sous-couche acoustique et outillage, détail TTC.">
+<link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Type scale */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  /* Spacing */
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem;
+  /* Palette atelier chêne */
+  --color-bg: #f4eee1;
+  --color-surface: #fbf7ec;
+  --color-surface-2: #fdfaf3;
+  --color-surface-offset: #efe7d4;
+  --color-divider: #e3d9c4;
+  --color-border: #d9cdb2;
+  --color-text: #32281a;
+  --color-text-muted: #7c6e56;
+  --color-text-faint: #a99e86;
+  --color-primary: #96591f;
+  --color-primary-hover: #7a4516;
+  --color-primary-soft: #f0e2cd;
+  --color-walnut: #2e2415;
+  --color-walnut-text: #f6efe0;
+  --color-success: #4a7228;
+  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 1px 2px rgba(46,36,21,0.06);
+  --shadow-md: 0 4px 12px rgba(46,36,21,0.08);
+  --shadow-lg: 0 12px 32px rgba(46,36,21,0.14);
+  --font-display: 'Boska', Georgia, serif;
+  --font-body: 'General Sans', 'Helvetica Neue', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: none; text-size-adjust: none; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  min-height: 100dvh; line-height: 1.6;
+  font-family: var(--font-body); font-size: var(--text-base);
+  color: var(--color-text); background-color: var(--color-bg);
+  background-image: radial-gradient(rgba(150,89,31,0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+h1, h2, h3 { text-wrap: balance; line-height: 1.15; }
+p, li { text-wrap: pretty; max-width: 72ch; }
+input, button, select { font: inherit; color: inherit; }
+a { color: var(--color-primary); text-underline-offset: 3px; }
+a:hover { color: var(--color-primary-hover); }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+img, svg { display: block; max-width: 100%; height: auto; }
+
+.wrap { max-width: 1200px; margin-inline: auto; padding-inline: clamp(var(--space-4), 4vw, var(--space-10)); }
+
+/* ---------- Header ---------- */
+header.site { padding-block: var(--space-10) var(--space-8); }
+.masthead { display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: flex-end; justify-content: space-between; }
+.eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-2); }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); max-width: 22ch; }
+.subtitle { color: var(--color-text-muted); margin-top: var(--space-3); font-size: var(--text-sm); max-width: 58ch; }
+.badge-date { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-full, 9999px); padding: var(--space-2) var(--space-4); font-size: var(--text-xs); color: var(--color-text-muted); box-shadow: var(--shadow-sm); white-space: nowrap; }
+.badge-date svg { width: 14px; height: 14px; color: var(--color-primary); }
+.herring { display: flex; gap: 6px; margin-top: var(--space-6); }
+.herring span { width: 34px; height: 10px; background: var(--color-primary); opacity: 0.18; transform: skewX(-24deg); border-radius: 2px; }
+.herring span:nth-child(even) { opacity: 0.32; }
+
+/* ---------- Layout ---------- */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); padding-bottom: var(--space-16); align-items: start; }
+@media (min-width: 1024px) { .layout { grid-template-columns: minmax(0, 7fr) minmax(340px, 4fr); } }
+
+/* ---------- Cards / steps ---------- */
+.step { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: clamp(var(--space-5), 3vw, var(--space-8)); box-shadow: var(--shadow-sm); }
+.step + .step { margin-top: var(--space-6); }
+.step-head { display: flex; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-2); }
+.step-num { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-primary); font-weight: 700; }
+.step h2 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; }
+.step-note { font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-5); max-width: 62ch; }
+
+/* ---------- Dimensions ---------- */
+.dims { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.dim label { display: block; font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); margin-bottom: var(--space-1); text-transform: uppercase; letter-spacing: 0.06em; }
+.dim input { width: 100%; padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface-2); font-size: var(--text-base); }
+.dim input:focus { border-color: var(--color-primary); outline: none; box-shadow: 0 0 0 3px var(--color-primary-soft); }
+.dim .unit { position: absolute; }
+.surfaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); margin-top: var(--space-5); }
+.surf { background: var(--color-surface-offset); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.surf dt { font-size: var(--text-xs); color: var(--color-text-muted); }
+.surf dd { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; margin-top: 2px; }
+.surf dd small { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 500; color: var(--color-text-muted); display: block; }
+.slider-row { margin-top: var(--space-5); }
+.slider-row label { display: flex; justify-content: space-between; font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-2); }
+.slider-row output { font-family: var(--font-display); color: var(--color-primary); font-size: var(--text-lg); font-weight: 700; }
+input[type='range'] { width: 100%; accent-color: var(--color-primary); height: 1.5rem; }
+.slider-scale { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-faint); }
+.hint { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); background: var(--color-primary-soft); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+
+/* ---------- Product cards ---------- */
+.options { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 640px) { .options.cols-2 { grid-template-columns: 1fr 1fr; } }
+.option { position: relative; display: block; }
+.option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.option-body { border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); background: var(--color-surface-2); cursor: pointer; transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); height: 100%; }
+.option:hover .option-body { border-color: var(--color-primary); }
+.option input:checked ~ .option-body { border-color: var(--color-primary); box-shadow: 0 0 0 1.5px var(--color-primary), var(--shadow-md); background: #fff9ee; }
+.option input:focus-visible ~ .option-body { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.option-title { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.option-title h3 { font-size: var(--text-base); font-weight: 700; line-height: 1.3; }
+.option-price { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--color-primary); white-space: nowrap; }
+.option-desc { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+.badges { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.badge { font-size: var(--text-xs); font-weight: 600; color: var(--color-primary); background: var(--color-primary-soft); border-radius: 9999px; padding: 2px var(--space-3); }
+.badge.warn { color: #8a4a12; background: #f4e0c8; }
+.option-meta { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); display: flex; justify-content: space-between; gap: var(--space-3); border-top: 1px dashed var(--color-border); padding-top: var(--space-3); }
+.option-link { font-size: var(--text-xs); color: var(--color-primary); text-decoration: none; }
+.option-link:hover { text-decoration: underline; }
+.calc-preview { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text); }
+.calc-preview strong { font-family: var(--font-display); color: var(--color-primary); }
+.warning { margin-top: var(--space-3); font-size: var(--text-xs); color: #8a4a12; background: #f7e8d2; border-radius: var(--radius-md); padding: var(--space-3); line-height: 1.5; }
+
+/* ---------- Summary ---------- */
+.summary { background: var(--color-walnut); color: var(--color-walnut-text); border-radius: var(--radius-lg); padding: clamp(var(--space-5), 3vw, var(--space-8)); box-shadow: var(--shadow-lg); position: sticky; top: var(--space-6); }
+@media (max-width: 1023px) { .summary { position: static; order: 2; } .steps-col { order: 1; } }
+.summary h2 { font-family: var(--font-display); font-size: var(--text-lg); margin-bottom: var(--space-4); }
+.surf-recap { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-bottom: var(--space-5); }
+.surf-recap div { background: rgba(246,239,224,0.08); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); }
+.surf-recap span { display: block; font-size: var(--text-xs); color: #c9bfa6; }
+.surf-recap strong { font-size: var(--text-sm); font-weight: 600; }
+.surf-recap .wide { grid-column: 1 / -1; background: rgba(246,239,224,0.14); }
+.line-items { border-top: 1px solid rgba(246,239,224,0.2); }
+.line-item { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); padding-block: var(--space-3); border-bottom: 1px solid rgba(246,239,224,0.14); }
+.li-info { min-width: 0; }
+.li-name { font-size: var(--text-sm); font-weight: 600; }
+.li-detail { font-size: var(--text-xs); color: #c9bfa6; margin-top: 1px; }
+.li-price { font-size: var(--text-sm); font-weight: 600; white-space: nowrap; }
+.total-row { display: flex; justify-content: space-between; align-items: baseline; padding-top: var(--space-5); }
+.total-row .label { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.1em; color: #c9bfa6; }
+.total-row .amount { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; }
+.total-note { margin-top: var(--space-3); font-size: var(--text-xs); color: #c9bfa6; line-height: 1.5; }
+.summary a { color: #e8c98f; }
+
+/* ---------- Footer / notes ---------- */
+.notes { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-muted); }
+.notes h2 { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-text); margin-bottom: var(--space-3); }
+.notes ul { padding-left: var(--space-5); display: grid; gap: var(--space-2); }
+footer.site { padding-block: var(--space-8); font-size: var(--text-xs); color: var(--color-text-faint); text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="site">
+  <div class="masthead">
+    <div>
+      <p class="eyebrow">Bricolage · Budget matériaux</p>
+      <h1>Calculateur de budget parquet stratifié</h1>
+      <p class="subtitle">Pièce de 1,52 m × 1,56 m — références et prix Leroy Merlin, achat par paquets complets, sous-couche acoustique et outillage. Tous les montants sont TTC.</p>
+    </div>
+    <span class="badge-date">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Prix constatés le 25/10/2026
+    </span>
+  </div>
+  <div class="herring" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</header>
+
+<div class="layout">
+  <div class="steps-col">
+
+    <!-- Étape 1 : la pièce -->
+    <section class="step" aria-labelledby="t1">
+      <div class="step-head"><span class="step-num">01</span><h2 id="t1">Votre pièce</h2></div>
+      <p class="step-note">Surface nette = longueur × largeur. La marge de chutes couvre les découpes de la première et dernière rangée ainsi que les ratés ; 15 % est recommandé pour une petite pièce, où les pertes proportionnelles sont plus élevées.</p>
+      <div class="dims">
+        <div class="dim"><label for="len">Longueur (m)</label><input id="len" type="number" min="0.5" max="20" step="0.01" value="1.52" inputmode="decimal"></div>
+        <div class="dim"><label for="wid">Largeur (m)</label><input id="wid" type="number" min="0.5" max="20" step="0.01" value="1.56" inputmode="decimal"></div>
+      </div>
+      <dl class="surfaces">
+        <div class="surf"><dt>Surface nette</dt><dd id="netOut">2,37 m²</dd></div>
+        <div class="surf"><dt>À commander</dt><dd><span id="targetOut">2,73 m²</span> <small id="targetNote">avec 15 % de chutes</small></dd></div>
+        <div class="surf"><dt>Surplus livré</dt><dd><span id="surplusOut">— m²</span> <small>chutes réutilisables</small></dd></div>
+      </dl>
+      <div class="slider-row">
+        <label for="waste">Marge pour les chutes <output id="wasteOut" for="waste">15 %</output></label>
+        <input type="range" id="waste" min="10" max="15" step="1" value="15" aria-describedby="wasteHint">
+        <div class="slider-scale"><span>10 % (pièce simple)</span><span>15 % (petite pièce, conseillé)</span></div>
+      </div>
+    </section>
+
+    <!-- Étape 2 : le stratifié -->
+    <section class="step" aria-labelledby="t2">
+      <div class="step-head"><span class="step-num">02</span><h2 id="t2">Le sol stratifié</h2></div>
+      <p class="step-note">Entrée à milieu de gamme, du 13,99 €/m² au 24,99 €/m². Les lames se vendent par botte complète : le calculateur arrondit au nombre de bottes nécessaire.</p>
+      <fieldset class="options cols-2" id="floorGroup" style="border:none">
+        <legend class="sr-only">Choisissez votre sol stratifié</legend>
+      </fieldset>
+    </section>
+
+    <!-- Étape 3 : la sous-couche -->
+    <section class="step" aria-labelledby="t3">
+      <div class="step-head"><span class="step-num">03</span><h2 id="t3">La sous-couche acoustique</h2></div>
+      <p class="step-note">Indispensable au confort acoustique et exigée par les fabricants pour la garantie. Les quatre stratifiés proposés n'ont pas de sous-couche intégrée : pas de doublon. Vendue en rouleau complet.</p>
+      <fieldset class="options" id="underlayGroup" style="border:none">
+        <legend class="sr-only">Choisissez votre sous-couche acoustique</legend>
+      </fieldset>
+    </section>
+
+    <!-- Étape 4 : les outils -->
+    <section class="step" aria-labelledby="t4">
+      <div class="step-head"><span class="step-num">04</span><h2 id="t4">Les outils de pose</h2></div>
+      <p class="step-note">Le maillet fait partie du kit de pose (cale de frappe) : pas besoin de l'acheter séparément. Cochez « déjà possédé » si vous avez l'outil.</p>
+      <fieldset class="options cols-2" id="kitGroup" style="border:none">
+        <legend class="sr-only">Choisissez votre kit de pose</legend>
+      </fieldset>
+      <h3 style="font-size:var(--text-base); margin-top:var(--space-6); margin-bottom:var(--space-4)">Découpe des lames</h3>
+      <fieldset class="options" id="cutGroup" style="border:none">
+        <legend class="sr-only">Choisissez votre outil de découpe</legend>
+      </fieldset>
+    </section>
+
+    <!-- Notes -->
+    <section class="notes" aria-labelledby="t5">
+      <h2 id="t5">Bon à savoir</h2>
+      <ul>
+        <li><strong>Paquets complets :</strong> pour 2,73 m² à couvrir, il faut 2 bottes quel que soit le modèle — soit 3,4 à 4,4 m² livrés selon la botte. Les chutes restantes (~1 à 2 m²) se conservent pour d'éventuelles réparations.</li>
+        <li><strong>Promotion en cours :</strong> l'ARTENS Intenso Malte est à 16,50 €/m² au lieu de 19,99 €/m² (offre valable jusqu'au 3 novembre 2026 sur leroymerlin.fr).</li>
+        <li><strong>Boîte à onglets :</strong> le modèle Dexter (285 × 110 mm) est trop étroit pour une lame de stratifié de 19,2 cm de large. Elle convient aux plinthes et aux petites coupes ; pour tronçonner les lames, préférez une scie sauteuse.</li>
+        <li><strong>Non inclus dans ce budget :</strong> plinthes et barres de seuil, livraison, pose par un artisan (comptez ~29 €/m² de main-d'œuvre via les artisans partenaires Leroy Merlin), film pare-vapeur sur dalle béton.</li>
+        <li><strong>Disponibilité :</strong> prix et stocks constatés sur leroymerlin.fr le 25 octobre 2026 — vérifiez la disponibilité en magasin à Annecy avant de commander.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Récapitulatif -->
+  <aside class="summary" aria-labelledby="tsum">
+    <h2 id="tsum">Récapitulatif TTC</h2>
+    <div class="surf-recap">
+      <div><span>Surface nette</span><strong id="sumNet">2,37 m²</strong></div>
+      <div><span>À commander</span><strong id="sumTarget">2,73 m² (15 %)</strong></div>
+      <div class="wide"><span>Stratifié livré</span><strong id="sumPurchased">— </strong></div>
+      <div class="wide"><span>Marge réelle due aux paquets complets</span><strong id="sumMargin">—</strong></div>
+    </div>
+    <div class="line-items" id="lineItems" aria-live="polite"></div>
+    <div class="total-row">
+      <span class="label">Total TTC</span>
+      <span class="amount" id="totalOut">— €</span>
+    </div>
+    <p class="total-note">Hors livraison et pose. Prix Leroy Merlin constatés le 25/10/2026 (les promotions peuvent évoluer). Soit <strong id="perM2Out">— €/m²</strong> de surface nette.</p>
+  </aside>
+</div>
+
+<footer class="site">
+  Calculateur indicatif — les prix, conditionnements et disponibilités sont susceptibles de varier. Consultez les fiches produits liées pour les valeurs à jour.
+</footer>
+</div>
+
+<script>
+/* ---------- Données vérifiées sur leroymerlin.fr le 25/10/2026 (TTC) ---------- */
+const FLOORINGS = [
+  {
+    id: 'maleny',
+    name: 'ARTENS Forte Maleny · 8 mm',
+    desc: 'Entrée de gamme — chêne clair, chanfrein V 4 côtés',
+    priceM2: 13.99, pack: 1.99, packPrice: 27.84,
+    badges: ['Le plus économique', 'Classe 32 · AC4'],
+    url: 'https://www.leroymerlin.fr/produits/sol-stratifie-forte-artens-maleny-ep-8-mm-85086497.html'
+  },
+  {
+    id: 'malte',
+    name: 'ARTENS Intenso Malte · 10 mm',
+    desc: 'Milieu de gamme — résistant à l\u2019eau, promo en cours',
+    priceM2: 16.50, pack: 1.689, packPrice: 27.87,
+    badges: ['Résistant à l\u2019eau', 'Promo −17 %'],
+    url: 'https://www.leroymerlin.fr/produits/sol-stratifie-intenso-artens-malte-ep-10-mm-resistant-a-eau-85086562.html'
+  },
+  {
+    id: 'saliente',
+    name: 'CREATIV LINE Saliente 2 · 8 mm',
+    desc: 'Milieu de gamme — classe 33, fabriqué en France',
+    priceM2: 17.99, pack: 2.222, packPrice: 39.97,
+    badges: ['Classe 33 · AC5', 'Fabriqué en France'],
+    url: 'https://www.leroymerlin.fr/produits/sol-stratifie-creativ-line-saliente-2-ep-8-mm-84681153.html'
+  },
+  {
+    id: 'avron',
+    name: 'Quick-Step Panache Avron · 8 mm',
+    desc: 'Haut de la fourchette — résistant à l\u2019eau, Uniclic',
+    priceM2: 24.99, pack: 2.172, packPrice: 54.28,
+    badges: ['Résistant à l\u2019eau', 'Pose Uniclic'],
+    url: 'https://www.leroymerlin.fr/produits/sol-stratifie-panache-sens-by-quick-step-avron-ep-8-mm-resistant-a-eau-88972567.html'
+  }
+];
+
+const UNDERLAYS = [
+  {
+    id: 'axton3',
+    name: 'AXTON Silence compensation 3 mm',
+    desc: 'Acoustique + compensation des petites irrégularités du sol',
+    roll: 10, rollPrice: 29.90, priceM2: 2.99,
+    url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-silence-compensation-ep-3-mm-axton-10-m2-82282778.html'
+  },
+  {
+    id: 'axton2',
+    name: 'AXTON Silence 2 mm',
+    desc: 'Acoustique standard — rouleau de 15 m²',
+    roll: 15, rollPrice: 35.85, priceM2: 2.39,
+    url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-silence-ep-2-mm-axton-15-m2-82282773.html'
+  },
+  {
+    id: 'unisound',
+    name: 'Quick-Step Unisound 2 mm',
+    desc: 'Acoustique premium — à réserver aux stratifiés Quick-Step',
+    roll: 15, rollPrice: 82.50, priceM2: 5.50,
+    url: 'https://www.leroymerlin.fr/produits/sous-couche-sol-stratifie-unisound-ep-2-mm-sens-by-quick-step-15-m2-82024098.html'
+  }
+];
+
+const KITS = [
+  {
+    id: 'dexter',
+    name: 'Kit de pose Dexter',
+    desc: '30 cales de dilatation + tire-lame + cale de frappe (maillet)',
+    price: 9.99,
+    url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-dexter-81974884.html'
+  },
+  {
+    id: 'wolfcraft',
+    name: 'Kit de pose WOLFCRAFT',
+    desc: 'Tire-lame + cale de frappe + 30 cales',
+    price: 16.90,
+    url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-wolfcraft-82767660.html'
+  },
+  {
+    id: 'quickstep',
+    name: 'Kit de pose Quick-Step',
+    desc: 'Cale de frappe + cales de dilatation réglables + tire-lame métal',
+    price: 18.90,
+    url: 'https://www.leroymerlin.fr/produits/kit-de-pose-pour-parquet-et-stratifie-sens-by-quick-step-82024100.html'
+  }
+];
+
+const CUTS = [
+  {
+    id: 'practyl',
+    name: 'Scie sauteuse PRACTYL 400 W',
+    desc: '1er prix — coupe bois 55 mm, idéale pour tronçonner les lames',
+    price: 19.90,
+    url: 'https://www.leroymerlin.fr/produits/scie-sauteuse-filaire-practyl-400w-91177661.html'
+  },
+  {
+    id: 'dexter500',
+    name: 'Scie sauteuse DEXTER 500 W',
+    desc: 'Plus robuste — 4,5 étoiles, 290 avis',
+    price: 24.90,
+    url: 'https://www.leroymerlin.fr/produits/scie-sauteuse-filaire-dexter-500w-92220950.html'
+  },
+  {
+    id: 'onglet',
+    name: 'Boîte à onglet + scie Dexter 360 mm',
+    desc: 'Le moins cher — scie à dos incluse',
+    price: 10.90, warn: true,
+    url: 'https://www.leroymerlin.fr/produits/boite-a-onglet-avec-scie-l-360-mm-dexter-82711878.html'
+  }
+];
+
+const NONE = { id: 'none', name: 'Aucun — déjà possédé', desc: 'Je dispose déjà de cet outil', price: 0, url: null };
+
+/* ---------- État ---------- */
+const state = { len: 1.52, wid: 1.56, waste: 15, floor: 'maleny', underlay: 'axton3', kit: 'dexter', cut: 'practyl' };
+
+/* ---------- Utilitaires ---------- */
+const fmt = n => n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt1 = n => n.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const eur = n => fmt(n) + '\u00a0€';
+const byId = (arr, id) => arr.find(x => x.id === id);
+
+/* ---------- Rendu des cartes ---------- */
+function card({ group, item, checked, extra }) {
+  const li = document.createElement('div');
+  li.className = 'option';
+  const input = `<input type="radio" name="${group}" value="${item.id}" id="${group}-${item.id}" ${checked ? 'checked' : ''}>`;
+  const badges = (item.badges || []).map(b => `<span class="badge${item.warn ? ' warn' : ''}">${b}</span>`).join('');
+  const warn = item.warn ? `<p class="warning">Boîte de 285 × 110 mm : trop étroite pour couper une lame de 19,2 cm de large. À réserver aux plinthes et petites coupes — pour les lames, choisissez une scie sauteuse.</p>` : '';
+  const link = item.url ? `<a class="option-link" href="${item.url}" target="_blank" rel="noopener">Voir la fiche Leroy Merlin →</a>` : '';
+  li.innerHTML = `${input}<div class="option-body">
+    <div class="option-title"><h3>${item.name}</h3><span class="option-price">${item.price > 0 ? eur(item.price) : '0\u00a0€'}</span></div>
+    <p class="option-desc">${item.desc}</p>
+    ${badges ? `<div class="badges">${badges}</div>` : ''}
+    <div class="option-meta"><span>${extra || ''}</span>${link}</div>
+    <div class="calc-preview" data-preview="${group}-${item.id}"></div>
+    ${warn}
+  </div>`;
+  return li;
+}
+
+function renderOptions() {
+  const fg = document.getElementById('floorGroup');
+  fg.innerHTML = '';
+  FLOORINGS.forEach(f => {
+    const el = card({ group: 'floor', item: { ...f, price: f.packPrice }, checked: f.id === state.floor, extra: `${fmt(f.priceM2)} €/m² · ${fmt(f.pack)} m² par botte` });
+    fg.appendChild(el);
+  });
+  const ug = document.getElementById('underlayGroup');
+  ug.innerHTML = '';
+  UNDERLAYS.forEach(u => {
+    const el = card({ group: 'underlay', item: { ...u, price: u.rollPrice }, checked: u.id === state.underlay, extra: `Rouleau de ${fmt1(u.roll)} m² · ${eur(u.priceM2)} / m²` });
+    ug.appendChild(el);
+  });
+  const kg = document.getElementById('kitGroup');
+  kg.innerHTML = '';
+  KITS.concat([NONE]).forEach(k => {
+    const el = card({ group: 'kit', item: { ...k, badges: k.id === 'dexter' ? ['Recommandé'] : [] }, checked: k.id === state.kit, extra: k.price > 0 ? 'cales + tire-lame + maillet' : '' });
+    kg.appendChild(el);
+  });
+  const cg = document.getElementById('cutGroup');
+  cg.innerHTML = '';
+  CUTS.concat([NONE]).forEach(c => {
+    const el = card({ group: 'cut', item: c, checked: c.id === state.cut, extra: '' });
+    cg.appendChild(el);
+  });
+
+  document.querySelectorAll('#floorGroup input').forEach(r => r.addEventListener('change', () => { state.floor = r.value; render(); }));
+  document.querySelectorAll('#underlayGroup input').forEach(r => r.addEventListener('change', () => { state.underlay = r.value; render(); }));
+  document.querySelectorAll('#kitGroup input').forEach(r => r.addEventListener('change', () => { state.kit = r.value; render(); }));
+  document.querySelectorAll('#cutGroup input').forEach(r => r.addEventListener('change', () => { state.cut = r.value; render(); }));
+}
+
+/* ---------- Calculs ---------- */
+function compute() {
+  const net = state.len * state.wid;
+  const target = net * (1 + state.waste / 100);
+  const f = byId(FLOORINGS, state.floor);
+  const packs = Math.ceil(target / f.pack);
+  const purchased = packs * f.pack;
+  const u = byId(UNDERLAYS, state.underlay);
+  const rolls = Math.ceil(target / u.roll);
+  const k = byId(KITS.concat([NONE]), state.kit);
+  const c = byId(CUTS.concat([NONE]), state.cut);
+  return {
+    net, target, f, packs, purchased, u, rolls,
+    floorCost: packs * f.packPrice,
+    underlayCost: rolls * u.rollPrice,
+    kitCost: k.price, cutCost: c.price,
+    total: packs * f.packPrice + rolls * u.rollPrice + k.price + c.price
+  };
+}
+
+/* ---------- Mise à jour ---------- */
+function render() {
+  const r = compute();
+  document.getElementById('netOut').textContent = fmt(r.net) + ' m²';
+  document.getElementById('targetOut').textContent = fmt(r.target) + ' m²';
+  document.getElementById('targetNote').textContent = `avec ${state.waste} % de chutes`;
+  document.getElementById('surplusOut').textContent = fmt(Math.max(r.purchased - r.net, 0)) + ' m²';
+  document.getElementById('wasteOut').textContent = state.waste + ' %';
+
+  FLOORINGS.forEach(f => {
+    const el = document.querySelector(`[data-preview="floor-${f.id}"]`);
+    if (el) {
+      const p = Math.ceil(r.target / f.pack);
+      el.innerHTML = f.id === state.floor
+        ? `Pour cette pièce : <strong>${p} botte${p > 1 ? 's' : ''}</strong> = ${fmt(p * f.pack)} m² → <strong>${eur(p * f.packPrice)}</strong>`
+        : `Pour cette pièce : ${p} botte${p > 1 ? 's' : ''} → ${eur(p * f.packPrice)}`;
+    }
+  });
+  UNDERLAYS.forEach(u => {
+    const el = document.querySelector(`[data-preview="underlay-${u.id}"]`);
+    if (el) {
+      const n = Math.ceil(r.target / u.roll);
+      el.innerHTML = u.id === state.underlay
+        ? `Il vous faut : <strong>${n} rouleau${n > 1 ? 'x' : ''}</strong> → <strong>${eur(n * u.rollPrice)}</strong>`
+        : `${n} rouleau${n > 1 ? 'x' : ''} → ${eur(n * u.rollPrice)}`;
+    }
+  });
+
+  document.getElementById('sumNet').textContent = fmt(r.net) + ' m²';
+  document.getElementById('sumTarget').textContent = fmt(r.target) + ` m² (${state.waste} %)`;
+  document.getElementById('sumPurchased').textContent = `${r.packs} botte${r.packs > 1 ? 's' : ''} = ${fmt(r.purchased)} m²`;
+  const realMargin = (r.purchased / r.net - 1) * 100;
+  document.getElementById('sumMargin').textContent = `+${fmt(realMargin)} % (paquets complets)`;
+
+  const rows = [
+    { name: r.f.name, detail: `${r.packs} botte${r.packs > 1 ? 's' : ''} × ${eur(r.f.packPrice)} (${fmt(r.purchased)} m² livrés)`, price: r.floorCost },
+    { name: r.u.name, detail: `${r.rolls} rouleau${r.rolls > 1 ? 'x' : ''} × ${eur(r.u.rollPrice)} (${fmt1(r.rolls * r.u.roll)} m²)`, price: r.underlayCost }
+  ];
+  if (r.kitCost > 0) rows.push({ name: 'Kit de pose (cales + tire-lame + maillet)', detail: state.kit === 'dexter' ? 'Kit Dexter' : state.kit === 'wolfcraft' ? 'Kit WOLFCRAFT' : 'Kit Quick-Step', price: r.kitCost });
+  if (r.cutCost > 0) rows.push({ name: 'Outil de découpe', detail: state.cut === 'practyl' ? 'Scie sauteuse PRACTYL 400 W' : state.cut === 'dexter500' ? 'Scie sauteuse DEXTER 500 W' : 'Boîte à onglet + scie Dexter', price: r.cutCost });
+
+  document.getElementById('lineItems').innerHTML = rows.map(row => `
+    <div class="line-item">
+      <div class="li-info"><div class="li-name">${row.name}</div><div class="li-detail">${row.detail}</div></div>
+      <div class="li-price">${eur(row.price)}</div>
+    </div>`).join('');
+
+  document.getElementById('totalOut').textContent = eur(r.total);
+  document.getElementById('perM2Out').textContent = eur(r.total / r.net) + ' /m²';
+}
+
+/* ---------- Écouteurs ---------- */
+document.getElementById('len').addEventListener('input', e => { state.len = Math.max(0.5, parseFloat(e.target.value) || 0); render(); });
+document.getElementById('wid').addEventListener('input', e => { state.wid = Math.max(0.5, parseFloat(e.target.value) || 0); render(); });
+document.getElementById('waste').addEventListener('input', e => { state.waste = parseInt(e.target.value, 10); render(); });
+
+renderOptions();
+render();
+</script>
+</body>
+</html>
